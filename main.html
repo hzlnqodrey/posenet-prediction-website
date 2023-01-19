@@ -1,0 +1,40 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Load TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <!-- Load Posenet -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+</head>
+
+<body>
+    <img id='cat' src='https://i.imgur.com/jlFgGpe.jpg' crossorigin='anonymous' />
+    <div 
+        id="output"
+        style="font-family:'Courier New', Courier, monospace;font-size: 24px; height: 300px;"
+    ></div>
+</body>
+<!-- Place your code in the script tag below. You can also use an external .js file -->
+<script>
+    var flipHorizontal = false;
+
+    var imageElement = document.getElementById('cat');
+
+    const outputElement = document.getElementById('output')
+
+    posenet.load().then(function (net) {
+        const pose = net.estimateSinglePose(imageElement, {
+            flipHorizontal: true
+        });
+        return pose;
+    }).then(function (pose) {
+        console.log(pose);
+        outputElement.innerHTML += "<br/>" + "Image Pose Score"  + " : " + pose.score;
+        pose_arr = pose.keypoints
+        outputElement.innerHTML += "<br/>" + "in Keypoints"  + " : " + pose_arr.length;
+
+    })
+</script>
+
+</html>
